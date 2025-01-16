@@ -246,3 +246,109 @@ http://localhost:3000/api/users/login
 - JWT token is required for protected routes
 - Use Bearer token authentication scheme
 - Token expiration is handled automatically
+
+# User Profile API Documentation
+
+## Endpoint: /users/profile
+
+### Overview
+Get the profile information of the currently authenticated user.
+
+### Method
+`GET`
+
+### URL
+```
+http://localhost:3000/api/users/profile
+```
+
+### Headers
+```
+Authorization: Bearer <jwt_token>
+```
+
+### Responses
+
+#### Success Response
+- **Status Code**: 200 (OK)
+- **Content Example**:
+```json
+{
+    "_id": "507f1f77bcf86cd799439011",
+    "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "createdAt": "2023-07-21T15:30:45.123Z",
+    "updatedAt": "2023-07-21T15:30:45.123Z"
+}
+```
+
+#### Error Responses
+
+1. Unauthorized (401)
+```json
+{
+    "message": "Authentication required"
+}
+```
+
+2. Invalid Token (401)
+```json
+{
+    "message": "Invalid token"
+}
+```
+
+# User Logout API Documentation
+
+## Endpoint: /users/logout
+
+### Overview
+Logs out the currently authenticated user and invalidates their token.
+
+### Method
+`GET`
+
+### URL
+```
+http://localhost:3000/api/users/logout
+```
+
+### Headers
+```
+Authorization: Bearer <jwt_token>
+```
+
+### Responses
+
+#### Success Response
+- **Status Code**: 200 (OK)
+- **Content Example**:
+```json
+{
+    "message": "Logged out"
+}
+```
+
+#### Error Responses
+
+1. Unauthorized (401)
+```json
+{
+    "message": "Authentication required"
+}
+```
+
+2. Invalid Token (401)
+```json
+{
+    "message": "Invalid token"
+}
+```
+
+### Security Notes
+- The token is blacklisted upon logout
+- Subsequent requests with the same token will be rejected
+- Cookies are cleared on logout
