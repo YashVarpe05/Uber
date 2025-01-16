@@ -352,3 +352,124 @@ Authorization: Bearer <jwt_token>
 - The token is blacklisted upon logout
 - Subsequent requests with the same token will be rejected
 - Cookies are cleared on logout
+
+# Captain Registration API Documentation
+
+## Endpoint: /captains/register
+
+### Overview
+This endpoint allows new captains to register in the system by providing their personal and vehicle information.
+
+### Method
+`POST`
+
+### URL
+```
+http://localhost:3000/api/captains/register
+```
+
+### Request Body
+| Field | Type | Required | Description | Validation |
+|-------|------|----------|-------------|------------|
+| email | string | Yes | Captain's email address | Must be a valid email format |
+| fullname.firstname | string | Yes | Captain's first name | Minimum 3 characters |
+| fullname.lastname | string | Yes | Captain's last name | Minimum 3 characters |
+| password | string | Yes | Captain's password | Minimum 8 characters |
+| vehicle.color | string | Yes | Vehicle color | Minimum 3 characters |
+| vehicle.plate | string | Yes | Vehicle plate number | Minimum 3 characters |
+| vehicle.capacity | number | Yes | Vehicle passenger capacity | Minimum 1 |
+| vehicle.vehicleType | string | Yes | Type of vehicle | Must be "car", "motorcycle", or "auto" |
+
+### Request Body Example
+```json
+{
+    "email": "captain@example.com",
+    "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+    },
+    "password": "password123",
+    "vehicle": {
+        "color": "Black",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+    }
+}
+```
+
+### Responses
+
+#### Success Response
+- **Status Code**: 201 (Created)
+- **Content Example**:
+```json
+{
+    "captain": {
+        "_id": "507f1f77bcf86cd799439011",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "captain@example.com",
+        "vehicle": {
+            "color": "Black",
+            "plate": "ABC123",
+            "capacity": 4,
+            "vehicleType": "car"
+        },
+        "createdAt": "2023-07-21T15:30:45.123Z",
+        "updatedAt": "2023-07-21T15:30:45.123Z"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+#### Error Response Examples
+
+1. Validation Errors (400 Bad Request)
+```json
+{
+    "errors": [
+        {
+            "msg": "Invalid email",
+            "param": "email"
+        },
+        {
+            "msg": "Invalid vehicle type",
+            "param": "vehicle.vehicleType"
+        }
+    ]
+}
+```
+
+2. Missing Vehicle Information (400 Bad Request)
+```json
+{
+    "errors": [
+        {
+            "msg": "All vehicle fields are required",
+            "param": "vehicle"
+        }
+    ]
+}
+```
+
+3. Duplicate Email (400 Bad Request)
+```json
+{
+    "message": "Captain already exists with this email"
+}
+```
+
+### Security Notes
+- Password is hashed before storing
+- Vehicle information is validated
+- Plate numbers must be unique
+- Authentication token is provided upon successful registration
+
+### Vehicle Types
+Available vehicle types:
+- car (4+ seats)
+- motorcycle (1-2 seats)
+- auto (3 seats)
