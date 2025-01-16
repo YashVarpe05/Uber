@@ -15,8 +15,13 @@ router.post(
 			.withMessage("Password must be at least 8 characters long"),
 	],
 	userController.registerUser
-	// (req, res) => {
-	// res.send("Register");
-	// }
+	
 );
+
+router.post('/login', [
+	body('email').isEmail().withMessage('Invalid email'),
+	body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+],
+userController.loginUser
+)
 module.exports = router;
