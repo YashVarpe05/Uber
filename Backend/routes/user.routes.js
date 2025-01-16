@@ -14,8 +14,9 @@ router.post(
 			.isLength({ min: 8 })
 			.withMessage("Password must be at least 8 characters long"),
 	],
-	(req, res) => {
-		res.send("Register");
-	}
-),
-	(module.exports = router);
+	userController.registerUser
+	// (req, res) => {
+	// res.send("Register");
+	// }
+);
+module.exports = router;
