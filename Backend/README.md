@@ -473,3 +473,171 @@ Available vehicle types:
 - car (4+ seats)
 - motorcycle (1-2 seats)
 - auto (3 seats)
+
+# Captain Login API Documentation
+
+## Endpoint: /captains/login
+
+### Overview
+Authenticates a captain and provides a JWT token for subsequent requests.
+
+### Method
+`POST`
+
+### URL
+```
+http://localhost:3000/api/captains/login
+```
+
+### Request Body
+| Field | Type | Required | Description | Validation |
+|-------|------|----------|-------------|------------|
+| email | string | Yes | Captain's email address | Must be a valid email format |
+| password | string | Yes | Captain's password | Minimum 6 characters |
+
+### Request Body Example
+```json
+{
+    "email": "captain@example.com",
+    "password": "password123"
+}
+```
+
+### Responses
+
+#### Success Response
+- **Status Code**: 200 (OK)
+- **Content Example**:
+```json
+{
+    "success": true,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "captain": {
+        "_id": "507f1f77bcf86cd799439011",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "captain@example.com",
+        "status": "inactive",
+        "vehicle": {
+            "color": "Black",
+            "plate": "ABC123",
+            "capacity": 4,
+            "vehicleType": "car"
+        }
+    }
+}
+```
+
+#### Error Responses
+1. Invalid Credentials (401 Unauthorized)
+```json
+{
+    "message": "Invalid email or password"
+}
+```
+
+# Captain Profile API Documentation
+
+## Endpoint: /captains/profile
+
+### Overview
+Get the profile information of the currently authenticated captain.
+
+### Method
+`GET`
+
+### URL
+```
+http://localhost:3000/api/captains/profile
+```
+
+### Headers
+```
+Authorization: Bearer <jwt_token>
+```
+
+### Responses
+
+#### Success Response
+- **Status Code**: 200 (OK)
+- **Content Example**:
+```json
+{
+    "captain": {
+        "_id": "507f1f77bcf86cd799439011",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "captain@example.com",
+        "status": "inactive",
+        "vehicle": {
+            "color": "Black",
+            "plate": "ABC123",
+            "capacity": 4,
+            "vehicleType": "car"
+        },
+        "location": {
+            "ltd": null,
+            "lng": null
+        }
+    }
+}
+```
+
+#### Error Response
+1. Unauthorized (401)
+```json
+{
+    "message": "Authentication required"
+}
+```
+
+# Captain Logout API Documentation
+
+## Endpoint: /captains/logout
+
+### Overview
+Logs out the currently authenticated captain and invalidates their token.
+
+### Method
+`GET`
+
+### URL
+```
+http://localhost:3000/api/captains/logout
+```
+
+### Headers
+```
+Authorization: Bearer <jwt_token>
+```
+
+### Responses
+
+#### Success Response
+- **Status Code**: 200 (OK)
+- **Content Example**:
+```json
+{
+    "message": "Logout successfully"
+}
+```
+
+#### Error Response
+1. Unauthorized (401)
+```json
+{
+    "message": "Authentication required"
+}
+```
+
+### Security Notes for Captain Endpoints
+- All endpoints except login and register require authentication
+- Passwords are hashed using bcrypt
+- JWT tokens expire after 24 hours
+- Vehicle information is validated on registration
+- Captain status is tracked (active/inactive)
+- Location updates are secure and authenticated
