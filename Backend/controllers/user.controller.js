@@ -29,27 +29,58 @@ module.exports.registerUser = async (req, res, next) => {
 };
 
 module.exports.loginUser = async (req, res, next) => {
-	const errors = validationResult(req);
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
-	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array() });
-	}
+        const { email, password } = req.body;
 
-	const { email, password } = req.body;
+        // Find user and explicitly include password field
+        const user = await userModel.findOne({ email }).select('+password');
+        
+        if (!user) {
+            return res.status(401).json({ 
+                success: false,
+                message: "Invalid email or password" 
+            });
+        }
 
-	const user = await userModel.findOne({ email }).select("+password");
-	if (!user) {
-		return res.status(401).json({ message: "Invalid email or password" });
-	}
+        // Debug password comparison
+        const isMatch = await user.comparePassword(password);
+        
+        if (!isMatch) {
+            return res.status(401).json({ 
+                success: false,
+                message: "Invalid email or password" 
+            });
+        }
 
-	const isMatch = await user.comparePassword(password);
-	if (!isMatch) {
-		return res.status(401).json({ message: "Invalid email or password" });
-	}
+        // Generate token and remove password from response
+        const token = user.generateAuthToken();
+        const userWithoutPassword = user.toObject();
+        delete userWithoutPassword.password;
 
-	const token = user.generateAuthToken();
-	res.cookie("token", token);
-	res.status(200).json({ user, token });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production"
+        });
+
+        return res.status(200).json({
+            success: true,
+            user: userWithoutPassword,
+            token
+        });
+
+    } catch (error) {
+        console.error("Login error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred during login",
+            error: error.message
+        });
+    }
 };
 
 module.exports.getUserProfile = async (req, res, next) => {

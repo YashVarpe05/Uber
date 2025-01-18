@@ -7,11 +7,11 @@ const captainSchema = new mongoose.Schema({
 		firstname: {
 			type: String,
 			required: true,
-			minlength: [3, "First name must be at least 3 characters long"],
+			minlength: [3, "Firstname must be at least 3 characters long"],
 		},
 		lastname: {
 			type: String,
-			minlength: [3, "Last name must be at least 3 characters long"],
+			minlength: [3, "Lastname must be at least 3 characters long"],
 		},
 	},
 	email: {
@@ -19,13 +19,11 @@ const captainSchema = new mongoose.Schema({
 		required: true,
 		unique: true,
 		lowercase: true,
-		match: [/\S+@\S+\.\S+/, "Please enter a valid email"],
-		// minlength: [8, "Email must be at least 8 characters long"],
+		match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
 	},
 	password: {
 		type: String,
 		required: true,
-		minlength: [8, "Password must be at least 8 characters long"],
 		select: false,
 	},
 	socketId: {
@@ -37,6 +35,7 @@ const captainSchema = new mongoose.Schema({
 		enum: ["active", "inactive"],
 		default: "inactive",
 	},
+
 	vehicle: {
 		color: {
 			type: String,
@@ -59,8 +58,9 @@ const captainSchema = new mongoose.Schema({
 			enum: ["car", "motorcycle", "auto"],
 		},
 	},
+
 	location: {
-		lat: {
+		ltd: {
 			type: Number,
 		},
 		lng: {
@@ -68,18 +68,22 @@ const captainSchema = new mongoose.Schema({
 		},
 	},
 });
+
 captainSchema.methods.generateAuthToken = function () {
 	const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
 		expiresIn: "24h",
 	});
 	return token;
 };
+
 captainSchema.methods.comparePassword = async function (password) {
 	return await bcrypt.compare(password, this.password);
 };
+
 captainSchema.statics.hashPassword = async function (password) {
 	return await bcrypt.hash(password, 10);
 };
-const captainModel = mongoose.model("Captain", captainSchema);
+
+const captainModel = mongoose.model("captain", captainSchema);
 
 module.exports = captainModel;
