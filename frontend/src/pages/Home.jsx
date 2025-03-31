@@ -9,9 +9,11 @@ const Home = () => {
 	const submitHandler = (e) => {
 		e.prevenDefault();
 	};
-	const [panelOpen, setpanelOpen] = useState(false);
+	const [panelOpen, setPanelOpen] = useState(false);
 	const panelRef = useRef(null);
+	const vehiclePanelRef = useRef(null);
 	const panelCloseRef = useRef(null);
+	const [vehiclePanel, setvehiclePanel] = useState(false);
 	useGSAP(() => {
 		if (panelOpen) {
 			gsap.to(panelRef.current, {
@@ -33,6 +35,18 @@ const Home = () => {
 			});
 		}
 	}, [panelOpen]);
+
+	useGSAP(() => {
+		if (vehiclePanel) {
+			gsap.to(vehiclePanelRef.current, {
+				transform: "translateY(0)",
+			});
+		} else {
+			gsap.to(vehiclePanelRef.current, {
+				transform: "translateY(100%)",
+			});
+		}
+	}, [vehiclePanel]);
 	return (
 		<div className="h-screen relative overflow-hidden">
 			<img
@@ -52,7 +66,7 @@ const Home = () => {
 					<h5
 						ref={panelCloseRef}
 						onClick={() => {
-							setpanelOpen(false);
+							setPanelOpen(false);
 						}}
 						className="absolute opacity-0 top-6 right-6 text-2xl"
 					>
@@ -67,7 +81,7 @@ const Home = () => {
 						<div className="line absolute h-16 w-1 top-[44%] left-10 bg-gray-800 rounded-full"></div>
 						<input
 							onClick={() => {
-								setpanelOpen(true);
+								setPanelOpen(true);
 							}}
 							value={pickup}
 							onChange={(e) => {
@@ -79,7 +93,7 @@ const Home = () => {
 						/>
 						<input
 							onClick={() => {
-								setpanelOpen(true);
+								setPanelOpen(true);
 							}}
 							value={destination}
 							onChange={(e) => {
@@ -92,11 +106,27 @@ const Home = () => {
 					</form>
 				</div>
 				<div ref={panelRef} className="bg-white h-0">
-					<LocationSearchPanel />
+					<LocationSearchPanel
+						// panelOpen={panelOpen}
+						setPanelOpen={setPanelOpen}
+						// vehiclePanel={vehiclePanel}
+						setvehiclePanel={setvehiclePanel}
+					/>
 				</div>
 			</div>
 
-			<div className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-8">
+			<div
+				ref={vehiclePanelRef}
+				className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14"
+			>
+				<h5
+					className="p-1 text-center w-[93%] absolute top-0"
+					onClick={() => {
+						setvehiclePanel(false);
+					}}
+				>
+					<i className="text-3xl text-green-200  ri-arrow-down-wide-line"></i>
+				</h5>
 				<h2 className="text-2xl font-semibold mb-5">Choose a Vehicle</h2>
 				<div className="flex w-full border-2 active:border-black bg-gray-100  mb-2 rounded-xl items-center justify-between p-3">
 					<img src="./carbg.png" alt="" className="h-12" />
