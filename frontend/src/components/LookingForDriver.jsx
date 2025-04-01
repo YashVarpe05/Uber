@@ -1,17 +1,17 @@
 import React from "react";
 
-const ConfirmRide = (props) => {
+const LookingForDriver = (props) => {
 	return (
 		<div>
 			<h5
 				className="p-1 text-center w-[93%] absolute top-0"
 				onClick={() => {
-					props.setConfirmRidePanel(false);
+					props.setVehicleFound(false);
 				}}
 			>
 				<i className="text-3xl text-green-200  ri-arrow-down-wide-line"></i>
 			</h5>
-			<h2 className="text-2xl font-semibold mb-5">Confirm Your Ride</h2>
+			<h2 className="text-2xl font-semibold mb-5">Looking for a Driver</h2>
 			<div className="flex gap-2 justify-between flex-col items-center">
 				<img className="h-24 " src="./Final_UberX.webp" alt="" />
 				<div className="w-full mt-5	">
@@ -38,18 +38,9 @@ const ConfirmRide = (props) => {
 						</div>
 					</div>
 				</div>
-				<button
-					onClick={() => {
-						props.setVehicleFound(true);
-						props.setConfirmRidePanel(false);
-					}}
-					className="w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg "
-				>
-					Confirm
-				</button>
 			</div>
 		</div>
 	);
 };
 
-export default ConfirmRide;
+export default LookingForDriver;
