@@ -82,7 +82,7 @@ const Home = () => {
 		}
 	}, [vehicleFound]);
 	useGSAP(() => {
-		if (WaitingForDriver) {
+		if (waitingForDriver) {
 			gsap.to(waitingForDriverRef.current, {
 				transform: "translateY(0)",
 			});
