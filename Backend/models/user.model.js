@@ -31,16 +31,18 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function () {
-	const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+	const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
+		expiresIn: "24h",
+	});
 	return token;
 };
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
-    try {
-        return await bcrypt.compare(candidatePassword, this.password);
-    } catch (error) {
-        throw new Error('Password comparison failed');
-    }
+	try {
+		return await bcrypt.compare(candidatePassword, this.password);
+	} catch (error) {
+		throw new Error("Password comparison failed");
+	}
 };
 
 userSchema.statics.hashPassword = async function (password) {

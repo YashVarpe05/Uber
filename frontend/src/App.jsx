@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Start from "./pages/Start";
 import UserLogin from "./pages/UserLogin";
 import UserSignup from "./pages/UserSignup";
-import Captainlogin from "./pages/CaptainLogin";
+import Captainlogin from "./pages/Captainlogin";
 import CaptainSignup from "./pages/CaptainSignup";
 import Home from "./pages/Home";
 import UserProtectWrapper from "./pages/UserProtectWrapper";
