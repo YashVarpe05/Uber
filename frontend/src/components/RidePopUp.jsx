@@ -11,9 +11,19 @@ const RidePopUp = () => {
 			>
 				<i className="text-3xl text-green-200  ri-arrow-down-wide-line"></i>
 			</h5>
-			<h2 className="text-2xl font-semibold mb-5">Confirm Your Ride</h2>
+			<h2 className="text-2xl font-semibold mb-5">New Ride Available</h2>
+			<div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg mt-4">
+				<div className="flex items-center gap-3 mt-4">
+					<img
+						className="h-12 w-12 rounded-full object-cover"
+						src="https://plus.unsplash.com/premium_photo-1688350808212-4e6908a03925?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHBvcnRyYWl0fGVufDB8fDB8fHww"
+						alt=""
+					/>
+					<h2 className="text-lg font-medium">Yash Varpe</h2>
+				</div>
+				<h5 className="text-lg font-semibold">2.2 KM</h5>
+			</div>
 			<div className="flex gap-2 justify-between flex-col items-center">
-				<img className="h-24 " src="./Final_UberX.webp" alt="" />
 				<div className="w-full mt-5	">
 					<div className="flex items-center gap-5 p-3 border-b-2">
 						<i className=" text-lg ri-map-pin-2-fill"></i>
@@ -46,6 +56,12 @@ const RidePopUp = () => {
 					className="w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg "
 				>
 					Confirm
+				</button>
+				<button
+					onClick={() => {}}
+					className="w-full mt-1 bg-gray-300 text-gray-700 font-semibold p-2 rounded-lg "
+				>
+					Ignore
 				</button>
 			</div>
 		</div>
