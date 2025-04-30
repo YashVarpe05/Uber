@@ -1,11 +1,13 @@
-import React from "react";
-
 const CaptainDetails = () => {
 	return (
 		<div>
 			<div className="flex items-center justify-between">
 				<div className="flex items-center justify-start gap-3">
-					<img className="h-10 w-10 rounded-full object-cover" src="" alt=" " />
+					<img
+						className="h-10 w-10 rounded-full object-cover"
+						src="https://media.istockphoto.com/id/2173377722/photo/sad-serene-indian-young-woman-contemning-near-window-with-a-blank-expression.webp?a=1&b=1&s=612x612&w=0&k=20&c=urhS1BKzbvL6FmTpjjOGlpIGMv4QdJahKvqoPiH9_DA="
+						alt=" "
+					/>
 					<h4 className="text-lg font-medium">Harsh Patel</h4>
 				</div>
 				<div className="">

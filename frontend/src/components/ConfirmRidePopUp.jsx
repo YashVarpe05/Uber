@@ -1,8 +1,8 @@
 import React from "react";
 
-const RidePopUp = (props) => {
+const ConfirmRidePopUp = (props) => {
 	return (
-		<div>
+		<div className="h-screen">
 			<h5
 				className="p-1 text-center w-[93%] absolute top-0"
 				onClick={() => {
@@ -11,7 +11,9 @@ const RidePopUp = (props) => {
 			>
 				<i className="text-3xl text-green-200  ri-arrow-down-wide-line"></i>
 			</h5>
-			<h2 className="text-2xl font-semibold mb-5">New Ride Available</h2>
+			<h2 className="text-2xl font-semibold mb-5">
+				Confirm this ride to Start
+			</h2>
 			<div className="flex items-center justify-between p-3 bg-yellow-400 rounded-lg mt-4">
 				<div className="flex items-center gap-3 mt-4">
 					<img
@@ -50,23 +52,24 @@ const RidePopUp = (props) => {
 				</div>
 				<button
 					onClick={() => {
-						props.setConfirmRidePopupPanel(true);
+						// props.setVehicleFound(true);
+						// props.setConfirmRidePanel(false);
 					}}
 					className="w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg "
 				>
-					Accept
+					Confirm
 				</button>
 				<button
 					onClick={() => {
-						props.setRidePopupPanel(false);
+						props.setConfirmRidePopupPanel(false);
 					}}
-					className="w-full mt-1 bg-gray-300 text-gray-700 font-semibold p-2 rounded-lg "
+					className="w-full mt-1 bg-red-600 text-white font-semibold p-2 rounded-lg "
 				>
-					Ignore
+					Cancel
 				</button>
 			</div>
 		</div>
 	);
 };
 
-export default RidePopUp;
+export default ConfirmRidePopUp;
