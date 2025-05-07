@@ -8,7 +8,7 @@ const rideSchema = new mongoose.Schema({
 	captain: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Captain",
-		required: true,
+		// required: true,
 	},
 	pickup: {
 		type: String,
@@ -25,22 +25,24 @@ const rideSchema = new mongoose.Schema({
 	},
 	duration: {
 		type: Number,
-		required: true,
+		// required: true,
 	},
 	distance: {
 		type: Number,
-		required: true,
-	},
+		// required: true,
+	}, //in seconds
 	paymentID: {
 		type: String,
-		required: true,
-	},
+		// required: true,
+	}, //in meters
 	orderID: {
 		type: String,
-		required: true,
+		// required: true,
 	},
 	signature: {
 		type: String,
-		required: true,
+		// required: true,
 	},
 });
+
+module.exports = mongoose.model("ride", rideSchema);
