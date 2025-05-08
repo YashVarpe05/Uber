@@ -32,8 +32,14 @@ module.exports.getDistanceTime = async (origin, destination) => {
 		const results = response.data.rows[0].elements[0];
 		if (results && results.status === "OK") {
 			return {
-				distance: results.distance.text,
-				duration: results.duration.text,
+				distance: {
+					text: results.distance.text,
+					value: results.distance.value,
+				},
+				duration: {
+					text: results.duration.text,
+					value: results.duration.value,
+				},	
 			};
 		} else {
 			throw new Error("No results found for the given origin and destination");

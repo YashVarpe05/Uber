@@ -1,17 +1,27 @@
 const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
-
+const rideController = require("../controllers/ride.controller");
+const authMiddleware = require("../middlewares/auth.middleware");
 router.post(
 	"/create",
-	body("userId")
+	authMiddleware.authUser,
+
+	body("pickup")
 		.isString()
-		.isLength({ min: 24, max: 24 })
-        .withMessage("User ID is required and must be 24 characters long"),
-    body("pickupLocation")
-        .isString().isLength({ min: 3 })
-        .withMessage("Pickup location is required"),body('destinaition').isString()
-        .isLength({ min: 3 }).withMessage("Destination is required "),
+		.isLength({ min: 3 })
+		.withMessage("Pickup location is required"),
+	body("destination")
+		.isString()
+		.isLength({ min: 3 })
+		.withMessage("Destination is required "),
+	body("vehicleType")
+		.isString()
+		.isIn(["auto", "car", "motorcycle"])
+		.withMessage(
+			"Vehicle type is required and must be one of the following: auto, car, motorcycle"
+		),
+	rideController.createRide
 );
 
 module.exports = router;
