@@ -1,5 +1,7 @@
 const rideModel = require("../models/ride.model.js");
 const mapService = require("./maps.service");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const getFare = async (pickup, destination) => {
 	if (!pickup || !destination) {
@@ -42,8 +44,27 @@ const getFare = async (pickup, destination) => {
 	};
 	return fare;
 };
+
 module.exports.getFare = getFare;
 
+// const getOTP = async (num) => {
+// 	const otp = Array.from({ length: num }, () => crypto.randomInt(0, 10)).join(
+// 		""
+// 	);
+// 	const salt = await bcrypt.genSalt(10);
+// 	const hashedOtp = await bcrypt.hash(otp, salt);
+// 	return { otp, hashedOtp };
+// };
+
+const getOTP = async (num) => {
+	const generateOtp = () => {
+		const otp = crypto
+			.randomInt(Math.pow(10, num - 1), Math.pow(10, num))
+			.toString();
+		return otp;
+	};
+	return generateOtp(num);
+};
 module.exports.createRide = async ({
 	user,
 	pickup,
@@ -56,10 +77,14 @@ module.exports.createRide = async ({
 	const fare = await getFare(pickup, destination);
 	console.log(fare);
 
-	const ride = rideModel.create({
+	// Get the OTP and await the promise before saving to the model
+	// const otpData = await getOTP(6);
+
+	const ride = await rideModel.create({
 		user,
 		pickup,
 		destination,
+		otp: await getOTP(6), // Await the resolved value of getOTP
 		fare: fare[vehicleType],
 	});
 	return ride;
