@@ -1,8 +1,16 @@
 const app = require("./app");
 const mongoose = require("mongoose");
+const http = require("http");
+const { initializeSocket } = require("./socket");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Initialize Socket.io
+initializeSocket(server);
 
 // Connect to MongoDB
 mongoose
@@ -11,7 +19,7 @@ mongoose
 	.catch((err) => console.error("MongoDB connection error:", err));
 
 // Start server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
 
