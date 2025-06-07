@@ -16,11 +16,14 @@ const CaptainSignup = () => {
 	const [vehiclePlate, setVehiclePlate] = useState("");
 	const [vehicleCapacity, setVehicleCapacity] = useState("");
 	const [vehicleType, setVehicleType] = useState("");
+	const [error, setError] = useState("");
 
-	const { captain, setCaptain } = React.useContext(CaptainDataContext);
+	const { setCaptain } = React.useContext(CaptainDataContext);
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
+		setError("");
+
 		const captainData = {
 			fullname: {
 				firstname: firstName,
@@ -36,18 +39,35 @@ const CaptainSignup = () => {
 			},
 		};
 
-		const response = await axios.post(
-			`${import.meta.env.VITE_BASE_URL}/captains/register`,
-			captainData
-		);
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_BASE_URL}/captains/register`,
+				captainData
+			);
 
-		if (response.status === 201) {
-			const data = response.data;
-			setCaptain(data.captain);
-			localStorage.setItem("token", data.token);
-			navigate("/captain-home");
+			if (response.status === 201) {
+				const data = response.data;
+				setCaptain(data.captain);
+				localStorage.setItem("token", data.token);
+				navigate("/captain-home");
+			}
+		} catch (err) {
+			console.error("Registration error:", err);
+			if (err.response && err.response.data) {
+				if (err.response.data.errors) {
+					setError(err.response.data.errors.map((e) => e.msg).join(", "));
+				} else if (err.response.data.message) {
+					setError(err.response.data.message);
+				} else {
+					setError("Registration failed. Please try again.");
+				}
+			} else {
+				setError("Network error. Please try again.");
+			}
+			return; // Stop execution to preserve form data
 		}
 
+		// Only clear form if success
 		setEmail("");
 		setFirstName("");
 		setLastName("");
@@ -57,6 +77,7 @@ const CaptainSignup = () => {
 		setVehicleCapacity("");
 		setVehicleType("");
 	};
+
 	return (
 		<div className="py-5 px-5 h-screen flex flex-col justify-between">
 			<div>
@@ -96,7 +117,6 @@ const CaptainSignup = () => {
 							}}
 						/>
 					</div>
-
 					<h3 className="text-lg font-medium mb-2">
 						What's our Captain's email
 					</h3>
@@ -110,9 +130,7 @@ const CaptainSignup = () => {
 						type="email"
 						placeholder="email@example.com"
 					/>
-
 					<h3 className="text-lg font-medium mb-2">Enter Password</h3>
-
 					<input
 						className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
 						value={password}
@@ -123,7 +141,6 @@ const CaptainSignup = () => {
 						type="password"
 						placeholder="password"
 					/>
-
 					<h3 className="text-lg font-medium mb-2">Vehicle Information</h3>
 					<div className="flex gap-4 mb-7">
 						<input
@@ -157,7 +174,7 @@ const CaptainSignup = () => {
 							onChange={(e) => {
 								setVehicleCapacity(e.target.value);
 							}}
-						/>
+						/>{" "}
 						<select
 							required
 							className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
@@ -171,16 +188,17 @@ const CaptainSignup = () => {
 							</option>
 							<option value="car">Car</option>
 							<option value="auto">Auto</option>
-							<option value="moto">Moto</option>
+							<option value="motorcycle">Motorcycle</option>
 						</select>
 					</div>
-
+					{error && <div className="mb-4 text-red-600 text-sm">{error}</div>}{" "}
+					{error && <p className="text-red-500 mb-3 text-center">{error}</p>}
 					<button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base">
 						Create Captain Account
 					</button>
 				</form>
 				<p className="text-center">
-					Already have a account?
+					Already have a account?{" "}
 					<Link to="/captain-login" className="text-blue-600">
 						Login here
 					</Link>
