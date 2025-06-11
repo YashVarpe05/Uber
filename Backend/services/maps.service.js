@@ -1,4 +1,5 @@
 const axios = require("axios");
+const captainModel = require("../models/captain.model");
 
 module.exports.getAddressCoordinate = async (address) => {
 	const apiKey = process.env.GOOGLE_MAPS_API; // Make sure to set this in your environment
@@ -39,7 +40,7 @@ module.exports.getDistanceTime = async (origin, destination) => {
 				duration: {
 					text: results.duration.text,
 					value: results.duration.value,
-				},	
+				},
 			};
 		} else {
 			throw new Error("No results found for the given origin and destination");
@@ -68,4 +69,25 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
 	} catch (error) {
 		throw new Error("Failed to fetch suggestions: " + error.message);
 	}
+};
+
+module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
+	const captains = await captainModel.find({
+		location: {
+			$geoWithin: {
+				$centerSphere: [[lng, ltd], radius / 6378.1], // radius in kilometers
+			},
+		},
+	});
+
+	if (!captains || captains.length === 0) {
+		throw new Error("No captains found in the specified radius");
+	}
+
+	return captains.map((captain) => ({
+		id: captain._id,
+		name: captain.name,
+		location: captain.location,
+		rating: captain.rating,
+	}));
 };

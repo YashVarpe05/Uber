@@ -2,6 +2,12 @@ import { useContext } from "react";
 import { CaptainDataContext } from "../context/CaptainContext";
 const CaptainDetails = () => {
 	const { captain } = useContext(CaptainDataContext);
+
+	// If captain data isn't available yet, show a loading state
+	if (!captain) {
+		return <div>Loading captain details...</div>;
+	}
+
 	return (
 		<div>
 			<div className="flex items-center justify-between">
@@ -11,7 +17,7 @@ const CaptainDetails = () => {
 						src="https://media.istockphoto.com/id/2173377722/photo/sad-serene-indian-young-woman-contemning-near-window-with-a-blank-expression.webp?a=1&b=1&s=612x612&w=0&k=20&c=urhS1BKzbvL6FmTpjjOGlpIGMv4QdJahKvqoPiH9_DA="
 						alt=" "
 					/>
-					<h4 className="text-lg font-medium">
+					<h4 className="text-lg font-medium capitalize">
 						{captain && captain.fullname
 							? `${captain.fullname.firstname} ${captain.fullname.lastname}`
 							: "Captain Name"}
