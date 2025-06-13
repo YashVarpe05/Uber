@@ -17,13 +17,6 @@ module.exports.createUser = async ({
 		email,
 		password,
 	});
-	return user;
-};
 
-module.exports.findUserByEmail = async (email) => {
-    try {
-        return await userModel.findOne({ email }).select('+password');
-    } catch (error) {
-        throw new Error('Error finding user');
-    }
+	return user;
 };

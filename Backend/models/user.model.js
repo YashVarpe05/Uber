@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const userSchema = new mongoose.Schema({
 	fullname: {
 		firstname: {
@@ -17,12 +18,11 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		unique: true,
-		minlength: [6, "Email must be at least 6 characters long"],
+		minlength: [5, "Email must be at least 5 characters long"],
 	},
 	password: {
 		type: String,
 		required: true,
-		minlength: [8, "Password must be at least 8 characters long"],
 		select: false,
 	},
 	socketId: {
@@ -37,18 +37,14 @@ userSchema.methods.generateAuthToken = function () {
 	return token;
 };
 
-userSchema.methods.comparePassword = async function (candidatePassword) {
-	try {
-		return await bcrypt.compare(candidatePassword, this.password);
-	} catch (error) {
-		throw new Error("Password comparison failed");
-	}
+userSchema.methods.comparePassword = async function (password) {
+	return await bcrypt.compare(password, this.password);
 };
 
 userSchema.statics.hashPassword = async function (password) {
 	return await bcrypt.hash(password, 10);
 };
 
-const userModel = mongoose.model("User", userSchema);
+const userModel = mongoose.model("user", userSchema);
 
 module.exports = userModel;

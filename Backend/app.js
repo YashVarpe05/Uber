@@ -14,10 +14,12 @@ connectToDb();
 // CORS configuration
 app.use(
 	cors({
-		origin:
+		origin: [
 			process.env.NODE_ENV === "production"
 				? process.env.FRONTEND_URL
 				: "http://localhost:5173",
+			"https://fjclf5gk-5173.inc1.devtunnels.ms", // Add your dev tunnel URL
+		],
 		credentials: true,
 	})
 );

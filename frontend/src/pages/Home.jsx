@@ -11,10 +11,8 @@ import WaitingForDriver from "../components/WaitingForDriver";
 import { SocketContext } from "../context/SocketContext";
 import { useContext } from "react";
 import { UserDataContext } from "../context/UserContext";
-
 import { useNavigate } from "react-router-dom";
 import LiveTracking from "../components/LiveTracking";
-// const { sendMessage, receiveMessage } = useContext(SocketContext);
 
 const Home = () => {
 	const [pickup, setPickup] = useState("");
@@ -70,7 +68,7 @@ const Home = () => {
 					},
 				}
 			);
-			setPickupSuggestions(response.data.suggestions || []);
+			setPickupSuggestions(response.data);
 		} catch {
 			// handle error
 		}
@@ -88,7 +86,7 @@ const Home = () => {
 					},
 				}
 			);
-			setDestinationSuggestions(response.data.suggestions || []);
+			setDestinationSuggestions(response.data);
 		} catch {
 			// handle error
 		}
@@ -182,6 +180,7 @@ const Home = () => {
 		},
 		[waitingForDriver]
 	);
+
 	async function findTrip() {
 		setVehiclePanel(true);
 		setPanelOpen(false);
@@ -196,10 +195,7 @@ const Home = () => {
 			}
 		);
 
-		console.log("Fare data:", response.data);
-
-		// Check if response.data.fare exists and use that, otherwise use response.data
-		setFare(response.data.fare || response.data);
+		setFare(response.data);
 	}
 
 	async function createRide() {
