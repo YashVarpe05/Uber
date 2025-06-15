@@ -58,37 +58,45 @@ const Home = () => {
 
 	const handlePickupChange = async (e) => {
 		setPickup(e.target.value);
+		if (e.target.value.length < 3) {
+			setPickupSuggestions([]);
+			return;
+		}
 		try {
-			const response = await axios.get(
+			const { data } = await axios.get(
 				`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`,
 				{
 					params: { input: e.target.value },
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
+					headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 				}
 			);
-			setPickupSuggestions(response.data);
-		} catch {
-			// handle error
+			setPickupSuggestions(
+				Array.isArray(data.suggestions) ? data.suggestions : []
+			);
+		} catch (err) {
+			setPickupSuggestions([]);
 		}
 	};
 
 	const handleDestinationChange = async (e) => {
 		setDestination(e.target.value);
+		if (e.target.value.length < 3) {
+			setDestinationSuggestions([]);
+			return;
+		}
 		try {
-			const response = await axios.get(
+			const { data } = await axios.get(
 				`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`,
 				{
 					params: { input: e.target.value },
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
+					headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 				}
 			);
-			setDestinationSuggestions(response.data);
-		} catch {
-			// handle error
+			setDestinationSuggestions(
+				Array.isArray(data.suggestions) ? data.suggestions : []
+			);
+		} catch (err) {
+			setDestinationSuggestions([]);
 		}
 	};
 
