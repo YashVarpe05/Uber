@@ -10,10 +10,6 @@ module.exports.createRide = async (req, res) => {
 		return res.status(400).json({ errors: errors.array() });
 	}
 
-	if (!req.user) {
-		return res.status(401).json({ message: "Unauthorized: user not found" });
-	}
-
 	const { userId, pickup, destination, vehicleType } = req.body;
 
 	try {
