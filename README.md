@@ -6,7 +6,7 @@ This project is a ride-sharing application similar to Uber, allowing users to re
 
 Technologies Used
 
-- Frontend: React Native
+- Frontend: React 
 - Backend: Node.js, Express.js
 - Database: MongoDB
 - Authentication: JWT (JSON Web Tokens)
@@ -27,7 +27,7 @@ d:\Projects\Uber\
 │   ├── config/          - Configuration files
 │   ├── server.js        - Main server file
 │   └── package.json     - Backend dependencies
-├── mobile/
+├─   frontend/
 │   ├── src/
 │   │   ├── components/  - Reusable UI components
 │   │   ├── screens/     - Application screens
@@ -47,10 +47,9 @@ Prerequisites
 
 - Node.js (v14+)
 - MongoDB
-- React Native environment setup
+- React setup
 - Google Maps API key
-- Stripe account
-  Backend Setup
+- Backend Setup
 
 1. Navigate to the backend directory:
 
@@ -71,7 +70,6 @@ PORT=5000
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-STRIPE_SECRET_KEY=your_stripe_secret_key
 ```
 
 4. Start the server:
@@ -110,11 +108,6 @@ Users
 
 - `GET /api/users/:id` - Get user profile
 - `PUT /api/users/:id` - Update user profile
-
-Payments
-
-- `POST /api/payments` - Process payment
-- `GET /api/payments/history` - Get payment history
 
 ## Testing
 
