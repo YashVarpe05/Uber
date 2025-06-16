@@ -2,6 +2,8 @@ const captainModel = require("../models/captain.model");
 const captainService = require("../services/captain.service");
 const blackListTokenModel = require("../models/blackListToken.model");
 const { validationResult } = require("express-validator");
+const rideService = require("../services/ride.service");
+const { sendMessageToSocketId } = require("../socket");
 
 module.exports.registerCaptain = async (req, res, next) => {
 	const errors = validationResult(req);
@@ -74,4 +76,34 @@ module.exports.logoutCaptain = async (req, res, next) => {
 	res.clearCookie("token");
 
 	res.status(200).json({ message: "Logout successfully" });
+};
+
+module.exports.confirmRide = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	if (!req.captain) {
+		return res.status(401).json({ message: "Unauthorized: captain not found" });
+	}
+
+	const { rideId } = req.body;
+
+	try {
+		const ride = await rideService.confirmRide({
+			rideId,
+			captain: req.captain,
+		});
+
+		sendMessageToSocketId(ride.user.socketId, {
+			event: "ride-confirmed",
+			data: ride,
+		});
+
+		return res.status(200).json(ride);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ message: err.message });
+	}
 };
